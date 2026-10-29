@@ -88,7 +88,10 @@ local function run_export(xrns_path, output_path, opts)
   io.chmod(binary_path(), 755)
 
   local command = table.concat(args, " ")
-  local exit_ok = execute_succeeded(os.execute(command))
+
+  if os.platform() == "WINDOWS" then
+    command = '"' .. command .. '"'
+  end
 
   local log_text = read_file(log_path) or ""
   os.remove(log_path)
